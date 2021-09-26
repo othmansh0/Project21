@@ -17,7 +17,7 @@
 
 //you can cancel pending notifications – i.e., notifications you have scheduled that have yet to be delivered because their trigger hasn’t been met – using the center.removeAllPendingNotificationRequests()
 
-
+//---------------------------------------------------------------------------------------
 //We can now use that same (used in categoryIdentifier) text string to create buttons for the user to choose from, and iOS will show them when any notifications of that type are shown
 // done using two new classes: UNNotificationAction creates an individual button for the user to tap, and UNNotificationCategory groups multiple buttons together under a single identifier
 
@@ -30,7 +30,15 @@
 
 
 //intentIdentifiers:let us specify things like talking to siri for example
+//-------------------------------------------------------------------------------------
+//didReceive method for the notification center called when the user launch our app as a result of notification.This is called on our view controller because we’re the center’s delegate, so it’s down to us to decide how to handle the notification
 
+//We attached some customer data to the userInfo property of the notification content, and this is where it gets handed back – it’s your chance to link the notification to whatever app content it relates to
+//content.userInfo = ["customData": "fizzbuzz"]
+
+//When the user acts on a notification you can read its actionIdentifier property to see what they did. We have a single button with the “show” identifier
+
+//UNNotificationDefaultActionIdentifier  gets sent when the user swiped on the notification to unlock their device and launch the app
 
 import UserNotifications
 import UIKit
@@ -107,11 +115,44 @@ class ViewController: UIViewController,UNUserNotificationCenterDelegate {
         let category = UNNotificationCategory(identifier: "alarm", actions: [show], intentIdentifiers: [], options: [])
         
         center.setNotificationCategories([category])
-        
-        
-        
-        
+     
     }
+    //This might be much later on, so it’s marked with the @escaping keyword
+    //like networking or asking for feedback in an alert
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        
+        //We attached some customer data to the userInfo property of the notification content, and this is where it gets handed back – it’s your chance to link the notification to whatever app content it relates to
+        
+        
+        
+        // pull out the buried userInfo dictionary
+        let userInfo = response.notification.request.content.userInfo
+        
+        
+        // we can pull out our user info then decide what to do based on what the user chose.
+        if let customData = userInfo["customData"] as? String {
+            print("Custom data received: \(customData)")
+            
+            switch response.actionIdentifier {
+            case UNNotificationDefaultActionIdentifier:
+                // the user swiped to unlock
+                print("Default identifier")
+                
+            case "show":
+                // the user tapped our "show more info…" button
+                print("Show more information…")
+            default:
+                break
+            }
+            
+        }
+        // you must call the completion handler when you're done
+        completionHandler()
+    }
+    
+    
+ 
+
 
 }
 
