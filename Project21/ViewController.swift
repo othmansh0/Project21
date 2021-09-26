@@ -57,6 +57,10 @@ class ViewController: UIViewController {
         content.userInfo = ["customData": "fizzbuzz"]
         content.sound = .default
         
+        var dateComponents = DateComponents()
+        dateComponents.hour = 8
+        dateComponents.minute = 50
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
         
         
     }
