@@ -40,6 +40,17 @@
 
 //UNNotificationDefaultActionIdentifier  gets sent when the user swiped on the notification to unlock their device and launch the app
 
+//---------------------------------------------------------------------------------
+//review:
+// If a function receives a closure parameter and doesn't use it immediately, it must be marked @escaping.
+//Think about it like this: the closure escapes the method rather than being used inside there then thrown away.
+
+//Apps can read a shared notification center using UNUserNotificationCenter.current().
+
+
+//We can attach a custom data dictionary to our notifications.
+//This lets us provide context that gets sent back when the notification action is triggered
+
 import UserNotifications
 import UIKit
 
@@ -79,6 +90,7 @@ class ViewController: UIViewController,UNUserNotificationCenterDelegate {
         //you can attach custom actions by specifying categoryIdentifier
         content.categoryIdentifier = "alarm"
         
+        //optinal
         //To attach custom data to the notification,
         //e.g. an internal ID, use the userInfo dictionary property
         content.userInfo = ["customData": "fizzbuzz"]
@@ -136,10 +148,16 @@ class ViewController: UIViewController,UNUserNotificationCenterDelegate {
             switch response.actionIdentifier {
             case UNNotificationDefaultActionIdentifier:
                 // the user swiped to unlock
+                let ac = UIAlertController(title: "Swiped to Unlock", message: nil, preferredStyle: .alert)
+                ac.addAction(UIAlertAction(title: "OK", style: .default))
+                present(ac, animated: true)
                 print("Default identifier")
                 
             case "show":
                 // the user tapped our "show more info…" button
+                let ac = UIAlertController(title: "Tapped show more info", message: nil, preferredStyle: .alert)
+                ac.addAction(UIAlertAction(title: "OK", style: .default))
+                present(ac, animated: true)
                 print("Show more information…")
             default:
                 break
