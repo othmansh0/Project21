@@ -29,10 +29,13 @@
 //Options, which describe any special options that relate to the action. You can choose from .authenticationRequired, .destructive, and .foreground
 
 
+//intentIdentifiers:let us specify things like talking to siri for example
+
+
 import UserNotifications
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController,UNUserNotificationCenterDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,6 +62,7 @@ class ViewController: UIViewController {
 //  2.a trigger (when to show it)
 //  3.a request (the combination of content and trigger.)
     @objc func scheduleLocal() {
+        registerCategories()
         let ceneter = UNUserNotificationCenter.current()
         
         let content = UNMutableNotificationContent()
@@ -94,7 +98,20 @@ class ViewController: UIViewController {
     
     
     
-    
+    func registerCategories() {
+        let center = UNUserNotificationCenter.current()
+        // any alert-based messages that get sent will be routed to our view controller to be handled
+        center.delegate = self
+        
+        let show = UNNotificationAction(identifier: "show", title: "Tell me more...", options: .foreground)
+        let category = UNNotificationCategory(identifier: "alarm", actions: [show], intentIdentifiers: [], options: [])
+        
+        center.setNotificationCategories([category])
+        
+        
+        
+        
+    }
 
 }
 
