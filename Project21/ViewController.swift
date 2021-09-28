@@ -124,7 +124,10 @@ class ViewController: UIViewController,UNUserNotificationCenterDelegate {
         center.delegate = self
         
         let show = UNNotificationAction(identifier: "show", title: "Tell me more...", options: .foreground)
-        let category = UNNotificationCategory(identifier: "alarm", actions: [show], intentIdentifiers: [], options: [])
+        
+        let reminder = UNNotificationAction(identifier: "reminder", title: "remind me laterr", options: .foreground)
+        
+        let category = UNNotificationCategory(identifier: "alarm", actions: [show,reminder], intentIdentifiers: [], options: [])
         
         center.setNotificationCategories([category])
      
@@ -159,6 +162,17 @@ class ViewController: UIViewController,UNUserNotificationCenterDelegate {
                 ac.addAction(UIAlertAction(title: "OK", style: .default))
                 present(ac, animated: true)
                 print("Show more information…")
+                
+            case "reminder":
+             
+                print("fuck1")
+                DispatchQueue.main.asyncAfter(deadline: .now()+3) {
+                    print("fuck3")
+                    self.scheduleLocal()
+                }
+                
+                print("fuck2")
+            
             default:
                 break
             }
