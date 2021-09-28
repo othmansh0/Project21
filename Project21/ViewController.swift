@@ -51,6 +51,10 @@
 //We can attach a custom data dictionary to our notifications.
 //This lets us provide context that gets sent back when the notification action is triggered
 
+
+// 5.everything from { (granted, error) in to the end is a closure: that code won’t get run straight away. Instead, it gets passed as the second parameter to the requestAuthorization() method, which stores the code. This is important – in fact essential – to the working of this code, because iOS needs to ask the user for permission to show notifications
+
+
 import UserNotifications
 import UIKit
 
@@ -65,6 +69,7 @@ class ViewController: UIViewController,UNUserNotificationCenterDelegate {
     @objc func registerLocal() {
         let center = UNUserNotificationCenter.current()
             //request an alert+badge+sound
+        //5.
         center.requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
             if granted {
                 print("yay")
